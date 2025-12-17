@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    /* --- Hamburger Menu & Navbar --- */
     $('#menu').click(function () {
         $(this).toggleClass('fa-times');
         $('.navbar').toggleClass('nav-toggle');
@@ -15,7 +16,7 @@ $(document).ready(function () {
             document.querySelector('#scroll-top').classList.remove('active');
         }
 
-        // scroll spy
+        // Scroll Spy
         $('section').each(function () {
             let height = $(this).height();
             let offset = $(this).offset().top - 200;
@@ -29,111 +30,24 @@ $(document).ready(function () {
         });
     });
 
-    // smooth scrolling
+    /* --- Smooth Scrolling --- */
     $('a[href*="#"]').on('click', function (e) {
         e.preventDefault();
         $('html, body').animate({
             scrollTop: $($(this).attr('href')).offset().top,
-        }, 500, 'linear')
+        }, 500, 'linear');
     });
 
-    // <!-- emailjs to mail contact form data -->
-    $("#contact-form").submit(function (event) {
-        emailjs.init("user_TTDmetQLYgWCLzHTDgqxm");
-
-        emailjs.sendForm('contact_service', 'template_contact', '#contact-form')
-            .then(function (response) {
-                console.log('SUCCESS!', response.status, response.text);
-                document.getElementById("contact-form").reset();
-                alert("Form Submitted Successfully");
-            }, function (error) {
-                console.log('FAILED...', error);
-                alert("Form Submission Failed! Try Again");
-            });
-        event.preventDefault();
-    });
-    // <!-- emailjs to mail contact form data -->
-
-});
-
-document.addEventListener('visibilitychange',
-    function () {
-        if (document.visibilityState === "visible") {
-            document.title = "Portfolio | Aditya Kasoudhan";
-            $("#favicon").attr("href", "assets/images/favicon.png");
-        }
-        else {
-            document.title = "Come Back To Portfolio";
-            $("#favicon").attr("href", "assets/images/favhand.png");
-        }
+    /* --- Typed.js Effect --- */
+    var typed = new Typed(".typing-text", {
+        strings: ["Android Developer", "Web Developer", "AI & ML Enthusiast", "Kotlin Expert"],
+        loop: true,
+        typeSpeed: 50,
+        backSpeed: 25,
+        backDelay: 500,
     });
 
-
-// <!-- typed js effect starts -->
-var typed = new Typed(".typing-text", {
-    strings: ["android development","frontend development", "backend development", "web designing", "web development"],
-    loop: true,
-    typeSpeed: 50,
-    backSpeed: 25,
-    backDelay: 500,
-});
-// <!-- typed js effect ends -->
-
-async function fetchData(type = "skills") {
-    let response
-    type === "skills" ?
-        response = await fetch("skills.json")
-        :
-        response = await fetch("./projects/projects.json")
-    const data = await response.json();
-    return data;
-}
-
-function showSkills(skills) {
-    let skillsContainer = document.getElementById("skillsContainer");
-    let skillHTML = "";
-    skills.forEach(skill => {
-        skillHTML += `
-        <div class="bar">
-              <div class="info">
-                <img src=${skill.icon} alt="skill" />
-                <span>${skill.name}</span>
-              </div>
-            </div>`
-    });
-    skillsContainer.innerHTML = skillHTML;
-}
-
-function showProjects(projects) {
-    let projectsContainer = document.querySelector("#work .box-container");
-    let projectHTML = "";
-    projects.slice(0, 10).filter(project => project.category != "android").forEach(project => {
-        projectHTML += `
-        <div class="box tilt">
-      <img draggable="false" src="/assets/images/projects/${project.image}.png" alt="project" />
-      <div class="content">
-        <div class="tag">
-        <h3>${project.name}</h3>
-        </div>
-        <div class="desc">
-          <p>${project.desc}</p>
-          <div class="btns">
-            <a href="${project.links.view}" class="btn" target="_blank"><i class="fas fa-eye"></i> View</a>
-            <a href="${project.links.code}" class="btn" target="_blank">Code <i class="fas fa-code"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>`
-    });
-    projectsContainer.innerHTML = projectHTML;
-
-    // <!-- tilt js effect starts -->
-    VanillaTilt.init(document.querySelectorAll(".tilt"), {
-        max: 15,
-    });
-    // <!-- tilt js effect ends -->
-
-    /* ===== SCROLL REVEAL ANIMATION ===== */
+    /* --- Scroll Reveal Animation --- */
     const srtop = ScrollReveal({
         origin: 'top',
         distance: '80px',
@@ -141,182 +55,106 @@ function showProjects(projects) {
         reset: true
     });
 
-    /* SCROLL PROJECTS */
+    /* Scroll Home */
+    srtop.reveal('.home .content h3', { delay: 200 });
+    srtop.reveal('.home .content p', { delay: 200 });
+    srtop.reveal('.home .content .btn', { delay: 200 });
+    srtop.reveal('.home .image', { delay: 400 });
+    srtop.reveal('.home .socials', { interval: 600 });
+
+    /* Scroll About */
+    srtop.reveal('.about .content h3', { delay: 200 });
+    srtop.reveal('.about .content .tag', { delay: 200 });
+    srtop.reveal('.about .content p', { delay: 200 });
+    srtop.reveal('.about .content .box-container', { delay: 200 });
+    srtop.reveal('.about .content .resumebtn', { delay: 200 });
+
+    /* Scroll Skills */
+    srtop.reveal('.skills .container', { interval: 200 });
+    srtop.reveal('.skills .container .bar', { delay: 400 });
+
+    /* Scroll Education */
+    srtop.reveal('.education .box', { interval: 200 });
+
+    /* Scroll Projects */
     srtop.reveal('.work .box', { interval: 200 });
 
-}
+    /* Scroll Experience */
+    srtop.reveal('.experience .timeline', { delay: 400 });
+    srtop.reveal('.experience .timeline .container', { interval: 400 });
 
-fetchData().then(data => {
-    showSkills(data);
-});
-
-fetchData("projects").then(data => {
-    showProjects(data);
-});
-
-// <!-- tilt js effect starts -->
-VanillaTilt.init(document.querySelectorAll(".tilt"), {
-    max: 15,
-});
-// <!-- tilt js effect ends -->
+    /* Scroll Contact */
+    srtop.reveal('.contact .container', { delay: 400 });
+    srtop.reveal('.contact .container .form-group', { delay: 400 });
 
 
-// pre loader start
-// function loader() {
-//     document.querySelector('.loader-container').classList.add('fade-out');
-// }
-// function fadeOut() {
-//     setInterval(loader, 500);
-// }
-// window.onload = fadeOut;
-// pre loader end
+    /* --- Fetch Skills & Projects Data --- */
+    async function fetchData(type = "skills") {
+        let response, data;
+        try {
+            response = await fetch(`${type}.json`);
+            data = await response.json();
+        } catch (error) {
+            console.error(`Error fetching ${type}:`, error);
+            return;
+        }
 
-// disable developer mode
-document.onkeydown = function (e) {
-    if (e.keyCode == 123) {
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) {
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) {
-        return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) {
-        return false;
-    }
-    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
-        return false;
-    }
-}
+        const container = document.getElementById(type === "skills" ? "skillsContainer" : "workContainer");
+        let htmlContent = "";
 
-// Start of Tawk.to Live Chat
-/*var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-(function () {
-    var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-    s1.async = true;
-    s1.src = 'https://embed.tawk.to/60df10bf7f4b000ac03ab6a8/1f9jlirg6';
-    s1.charset = 'UTF-8';
-    s1.setAttribute('crossorigin', '*');
-    s0.parentNode.insertBefore(s1, s0);
-})();
-*
-// End of Tawk.to Live Chat
-
-
-/* ===== SCROLL REVEAL ANIMATION ===== */
-const srtop = ScrollReveal({
-    origin: 'top',
-    distance: '80px',
-    duration: 1000,
-    reset: true
-});
-
-/* SCROLL HOME */
-srtop.reveal('.home .content h3', { delay: 200 });
-srtop.reveal('.home .content p', { delay: 200 });
-srtop.reveal('.home .content .btn', { delay: 200 });
-
-srtop.reveal('.home .image', { delay: 400 });
-srtop.reveal('.home .linkedin', { interval: 600 });
-srtop.reveal('.home .github', { interval: 800 });
-srtop.reveal('.home .twitter', { interval: 1000 });
-srtop.reveal('.home .telegram', { interval: 600 });
-srtop.reveal('.home .instagram', { interval: 600 });
-srtop.reveal('.home .dev', { interval: 600 });
-
-/* SCROLL ABOUT */
-srtop.reveal('.about .content h3', { delay: 200 });
-srtop.reveal('.about .content .tag', { delay: 200 });
-srtop.reveal('.about .content p', { delay: 200 });
-srtop.reveal('.about .content .box-container', { delay: 200 });
-srtop.reveal('.about .content .resumebtn', { delay: 200 });
-
-
-/* SCROLL SKILLS */
-srtop.reveal('.skills .container', { interval: 200 });
-srtop.reveal('.skills .container .bar', { delay: 400 });
-
-/* SCROLL EDUCATION */
-srtop.reveal('.education .box', { interval: 200 });
-
-/* SCROLL PROJECTS */
-srtop.reveal('.work .box', { interval: 200 });
-
-/* SCROLL EXPERIENCE */
-srtop.reveal('.experience .timeline', { delay: 400 });
-srtop.reveal('.experience .timeline .container', { interval: 400 });
-
-/* SCROLL CONTACT */
-srtop.reveal('.contact .container', { delay: 400 });
-srtop.reveal('.contact .container .form-group', { delay: 400 });
-
-/* ===== FETCH SKILLS & PROJECTS ===== */
-
-async function fetchData(type = "skills") {
-    let response, data;
-    try {
-        response = await fetch(`${type}.json`);
-        data = await response.json();
-    } catch (error) {
-        console.error(`Error fetching ${type}:`, error);
-        return;
-    }
-
-    const container = document.getElementById(type === "skills" ? "skillsContainer" : "workContainer");
-    let htmlContent = "";
-
-    if (type === "skills") {
-        // Render Skills
-        data.forEach(skill => {
-            htmlContent += `
-                <div class="bar">
-                    <div class="info">
-                        <img src="${skill.icon}" alt="${skill.name}" style="width:50px; height:50px; margin-bottom:10px;"/>
-                        <span style="display:block; font-weight:600; font-size:1.4rem; color:#0e2431;">${skill.name}</span>
-                    </div>
-                </div>`;
-        });
-    } else {
-        // Render Projects
-        data.forEach(project => {
-            htmlContent += `
-            <div class="box tilt" style="background:#fff; padding:2rem; border-radius:1rem; box-shadow:0 10px 10px rgba(0,0,0,0.1); margin:1.5rem; width:30rem;">
-                <img src="${project.image}" alt="${project.name}" style="width:100%; height:15rem; object-fit:cover; border-radius:.5rem;" />
-                <div class="content" style="padding-top:1rem;">
-                    <div class="tag">
-                        <h3 style="font-size:2rem; padding:1rem 0;">${project.name}</h3>
-                    </div>
-                    <div class="desc">
-                        <p style="font-size:1.4rem; color:#666; line-height:1.5;">${project.desc}</p>
-                        <div class="btns" style="margin-top:1.5rem; display:flex; justify-content:space-between;">
-                            <a href="${project.links.view}" class="btn" style="background:#2b3dda; color:#fff; padding:0.8rem 2rem; border-radius:5rem; font-size:1.2rem;">View</a>
-                            <a href="${project.links.code}" class="btn" style="background:#000; color:#fff; padding:0.8rem 2rem; border-radius:5rem; font-size:1.2rem;">Code <i class="fas fa-code"></i></a>
+        if (type === "skills") {
+            // Render Skills
+            data.forEach(skill => {
+                htmlContent += `
+                    <div class="bar">
+                        <div class="info">
+                            <img src="${skill.icon}" alt="${skill.name}" style="width:50px; height:50px; margin-bottom:10px;"/>
+                            <span style="display:block; font-weight:600; font-size:1.4rem; color:#0e2431;">${skill.name}</span>
+                        </div>
+                    </div>`;
+            });
+        } else {
+            // Render Projects
+            data.forEach(project => {
+                htmlContent += `
+                <div class="box tilt" style="background:#fff; padding:2rem; border-radius:1rem; box-shadow:0 10px 10px rgba(0,0,0,0.1); margin:1.5rem; width:30rem;">
+                    <img src="${project.image}" alt="${project.name}" style="width:100%; height:15rem; object-fit:cover; border-radius:.5rem;" />
+                    <div class="content" style="padding-top:1rem;">
+                        <div class="tag">
+                            <h3 style="font-size:2rem; padding:1rem 0;">${project.name}</h3>
+                        </div>
+                        <div class="desc">
+                            <p style="font-size:1.4rem; color:#666; line-height:1.5;">${project.desc}</p>
+                            <div class="btns" style="margin-top:1.5rem; display:flex; justify-content:space-between;">
+                                <a href="${project.links.view}" class="btn" style="background:#2b3dda; color:#fff; padding:0.8rem 2rem; border-radius:5rem; font-size:1.2rem;">View</a>
+                                <a href="${project.links.code}" class="btn" style="background:#000; color:#fff; padding:0.8rem 2rem; border-radius:5rem; font-size:1.2rem;">Code <i class="fas fa-code"></i></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>`;
-        });
+                </div>`;
+            });
+        }
+        container.innerHTML = htmlContent;
+
+        // Re-init vanilla tilt for new elements
+        if (typeof VanillaTilt !== 'undefined') {
+            VanillaTilt.init(document.querySelectorAll(".tilt"), { max: 15 });
+        }
     }
-    container.innerHTML = htmlContent;
-}
 
-// Initialize
-fetchData("skills");
-fetchData("projects");
+    // Initialize Data
+    fetchData("skills");
+    fetchData("projects");
 
-/* ===== CONTACT FORM SUBMISSION LOGIC ===== */
-$(document).ready(function() {
-    // Initialize EmailJS with your Public Key
-    // GO TO EmailJS Dashboard -> Account -> General -> Copy Public Key
-    emailjs.init("guxyXHv6kcU21I4zh"); 
 
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
+    /* --- EmailJS Contact Form Logic --- */
+    emailjs.init("guxyXHv6kcU21I4zh"); // Your Public Key
+
+    document.getElementById('contact-form').addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent page reload
 
-        // IDs you just provided
-        const serviceID = 'service_vr5sveg'; 
-        const templateID = 'template_mccoujn'; 
+        const serviceID = 'service_vr5sveg';
+        const templateID = 'template_mccoujn';
 
         // Change button text to show loading
         const btn = this.querySelector('button[type="submit"]');
@@ -327,21 +165,21 @@ $(document).ready(function() {
             .then(() => {
                 btn.innerHTML = 'Sent Successfully! <i class="fas fa-check"></i>';
                 btn.style.background = '#28a745'; // Green color
-                
+
                 // Clear the form
                 document.getElementById('contact-form').reset();
-                
+
                 // Reset button after 3 seconds
                 setTimeout(() => {
                     btn.innerHTML = originalText;
-                    btn.style.background = ''; 
+                    btn.style.background = '';
                 }, 3000);
             }, (err) => {
                 btn.innerHTML = 'Failed to Send <i class="fas fa-times"></i>';
                 btn.style.background = '#dc3545'; // Red color
                 console.error('EmailJS Error:', JSON.stringify(err));
                 alert("Failed to send message. Please check console for details.");
-                
+
                 // Reset button after 3 seconds
                 setTimeout(() => {
                     btn.innerHTML = originalText;
@@ -349,4 +187,25 @@ $(document).ready(function() {
                 }, 3000);
             });
     });
+
 });
+
+/* --- Tab Title Change on Visibility --- */
+document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === "visible") {
+        document.title = "Portfolio | Aditya Kasoudhan";
+        $("#favicon").attr("href", "assets/images/favicon.png");
+    } else {
+        document.title = "Come Back To Portfolio";
+        $("#favicon").attr("href", "assets/images/favhand.png");
+    }
+});
+
+/* --- Disable Developer Tools (Optional) --- */
+document.onkeydown = function (e) {
+    if (e.keyCode == 123) { return false; }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) { return false; }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'C'.charCodeAt(0)) { return false; }
+    if (e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0)) { return false; }
+    if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) { return false; }
+}
