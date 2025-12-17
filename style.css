@@ -1223,3 +1223,47 @@ form .button-area {
   top: calc(100% - 12rem);
 }
 /* scroll top ends */
+
+/* --- Fix for Skills Section Visibility --- */
+
+.skills .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  padding-top: 2rem;
+}
+
+/* Style the individual skill card */
+.skills .bar {
+  background: #ffffff !important;  /* Forces a White Background */
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Adds a subtle shadow for 3D effect */
+  text-align: center;
+  width: 15rem;
+  margin: 1rem;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect */
+.skills .bar:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+/* Style the text inside the card */
+.skills .bar .info span {
+  color: #000000 !important; /* Forces Pitch Black Text */
+  font-weight: 700;
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  display: block;
+}
+
+/* Style the icons to ensure they fit */
+.skills .bar .info img {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+}

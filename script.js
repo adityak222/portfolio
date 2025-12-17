@@ -191,7 +191,7 @@ document.onkeydown = function (e) {
 }
 
 // Start of Tawk.to Live Chat
-var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+/*var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 (function () {
     var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
     s1.async = true;
@@ -200,6 +200,7 @@ var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
     s1.setAttribute('crossorigin', '*');
     s0.parentNode.insertBefore(s1, s0);
 })();
+*
 // End of Tawk.to Live Chat
 
 
@@ -249,3 +250,103 @@ srtop.reveal('.experience .timeline .container', { interval: 400 });
 /* SCROLL CONTACT */
 srtop.reveal('.contact .container', { delay: 400 });
 srtop.reveal('.contact .container .form-group', { delay: 400 });
+
+/* ===== FETCH SKILLS & PROJECTS ===== */
+
+async function fetchData(type = "skills") {
+    let response, data;
+    try {
+        response = await fetch(`${type}.json`);
+        data = await response.json();
+    } catch (error) {
+        console.error(`Error fetching ${type}:`, error);
+        return;
+    }
+
+    const container = document.getElementById(type === "skills" ? "skillsContainer" : "workContainer");
+    let htmlContent = "";
+
+    if (type === "skills") {
+        // Render Skills
+        data.forEach(skill => {
+            htmlContent += `
+                <div class="bar">
+                    <div class="info">
+                        <img src="${skill.icon}" alt="${skill.name}" style="width:50px; height:50px; margin-bottom:10px;"/>
+                        <span style="display:block; font-weight:600; font-size:1.4rem; color:#0e2431;">${skill.name}</span>
+                    </div>
+                </div>`;
+        });
+    } else {
+        // Render Projects
+        data.forEach(project => {
+            htmlContent += `
+            <div class="box tilt" style="background:#fff; padding:2rem; border-radius:1rem; box-shadow:0 10px 10px rgba(0,0,0,0.1); margin:1.5rem; width:30rem;">
+                <img src="${project.image}" alt="${project.name}" style="width:100%; height:15rem; object-fit:cover; border-radius:.5rem;" />
+                <div class="content" style="padding-top:1rem;">
+                    <div class="tag">
+                        <h3 style="font-size:2rem; padding:1rem 0;">${project.name}</h3>
+                    </div>
+                    <div class="desc">
+                        <p style="font-size:1.4rem; color:#666; line-height:1.5;">${project.desc}</p>
+                        <div class="btns" style="margin-top:1.5rem; display:flex; justify-content:space-between;">
+                            <a href="${project.links.view}" class="btn" style="background:#2b3dda; color:#fff; padding:0.8rem 2rem; border-radius:5rem; font-size:1.2rem;">View</a>
+                            <a href="${project.links.code}" class="btn" style="background:#000; color:#fff; padding:0.8rem 2rem; border-radius:5rem; font-size:1.2rem;">Code <i class="fas fa-code"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        });
+    }
+    container.innerHTML = htmlContent;
+}
+
+// Initialize
+fetchData("skills");
+fetchData("projects");
+
+/* ===== CONTACT FORM SUBMISSION LOGIC ===== */
+$(document).ready(function() {
+    // Initialize EmailJS with your Public Key
+    // GO TO EmailJS Dashboard -> Account -> General -> Copy Public Key
+    emailjs.init("guxyXHv6kcU21I4zh"); 
+
+    document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent page reload
+
+        // IDs you just provided
+        const serviceID = 'service_vr5sveg'; 
+        const templateID = 'template_mccoujn'; 
+
+        // Change button text to show loading
+        const btn = this.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = 'Sending...';
+
+        emailjs.sendForm(serviceID, templateID, this)
+            .then(() => {
+                btn.innerHTML = 'Sent Successfully! <i class="fas fa-check"></i>';
+                btn.style.background = '#28a745'; // Green color
+                
+                // Clear the form
+                document.getElementById('contact-form').reset();
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = ''; 
+                }, 3000);
+            }, (err) => {
+                btn.innerHTML = 'Failed to Send <i class="fas fa-times"></i>';
+                btn.style.background = '#dc3545'; // Red color
+                console.error('EmailJS Error:', JSON.stringify(err));
+                alert("Failed to send message. Please check console for details.");
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                }, 3000);
+            });
+    });
+});

@@ -1,0 +1,33 @@
+[
+  {
+    "name": "Kotlin Video Editor",
+    "desc": "A robust Android video editing application featuring complex media manipulation capabilities.",
+    "image": "assets/images/projects/video-editor.png",
+    "category": "android",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/adityak222/kotlin_video_editor"
+    }
+  },
+  {
+    "name": "CSV Splitter & ML Kit",
+    "desc": "Android utility tool integrating on-device Machine Learning (ML Kit) for intelligent file processing.",
+    "image": "assets/images/projects/csv-splitter.png",
+    "category": "android",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/adityak222/android_kotlin_split_csv_mlkit"
+    }
+  },
+  {
+    "name": "API Resume Generator",
+    "desc": "A dynamic resume builder app using Jetpack Compose and RESTful APIs to fetch and format user data.",
+    "image": "assets/images/projects/resume-app.png",
+    "category": "android",
+    "links": {
+      "view": "#",
+      "code": "https://github.com/adityak222/ApiResumeApp"
+    }
+  }
+  
+]
